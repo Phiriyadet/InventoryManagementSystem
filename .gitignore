@@ -1,0 +1,83 @@
+
+# ==========================================
+# IDE & Editor
+# ==========================================
+.vs/
+.vscode/
+.idea/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# ==========================================
+# .NET / ASP.NET Core
+# ==========================================
+**/bin/
+**/obj/
+**/out/
+**/publish/
+**/TestResults/
+*.dll
+*.exe
+*.pdb
+
+# User-specific settings
+appsettings.Development.json
+appsettings.Local.json
+secrets.json
+
+# ==========================================
+# Node.js / Vue.js / Vite
+# ==========================================
+**/node_modules/
+**/dist/
+**/.vite/
+**/coverage/
+
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+
+# Environment variables
+.env
+.env.*
+!.env.example
+
+# ==========================================
+# Database
+# ==========================================
+*.db
+*.sqlite
+*.sqlite3
+
+# Database backups
+*.bak
+*.dump
+
+# ==========================================
+# Logs
+# ==========================================
+*.log
+logs/
+
+# ==========================================
+# OS Generated Files
+# ==========================================
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# ==========================================
+# Temporary Files
+# ==========================================
+*.tmp
+*.temp
+*.swp
+*.swo
+*.orig
+
+# ==========================================
+# Docker
+# ==========================================
+**/docker-data/
