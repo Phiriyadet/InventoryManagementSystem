@@ -1,6 +1,7 @@
 using Inventory.Api.Endpoints;
 using Inventory.Application.Abstractions.Repositories;
 using Inventory.Application.Abstractions.Services;
+using Inventory.Application.Customers;
 using Inventory.Application.Products;
 using Inventory.Infrastructure.Persistence;
 using Inventory.Infrastructure.Repositories;
@@ -17,7 +18,10 @@ builder.Services.AddDbContext<InventoryDbContext>(options =>
 
 // Register services
 builder.Services.AddScoped<IGoodsRepository, GoodsRepository>();
+builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
+
 builder.Services.AddScoped<IGoodsService, GoodsService>();
+builder.Services.AddScoped<ICustomerService, CustomerService>();
 
 builder.Services.AddOpenApi();
 
@@ -44,6 +48,7 @@ app.UseCors("Frontend");
 
 app.MapHealthEndpoints();
 app.MapGoodsEndpoints();
+app.MapCustomerEndpoints();
 
 
 await app.RunAsync();
