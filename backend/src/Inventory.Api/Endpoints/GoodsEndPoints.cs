@@ -46,7 +46,7 @@ public static class GoodsEndPoints
         {
             var result = await goodsService.AddGoodsAsync(goods, cancellationToken);
             return result.IsSuccess
-            ? Results.Ok(result.Value)
+            ? Results.Created($"/api/goods/{result.Value.GoodsId}", result.Value)
             : result.Error.Type switch
             {
                 ErrorType.Validation => Results.ValidationProblem(
