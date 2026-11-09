@@ -15,30 +15,37 @@ public class GoodsService : IGoodsService
         _goodsRepository = goodsRepository;
     }
     public async Task<Result<Goods>> AddGoodsAsync(
-    CreateGoodsRequest goods,
+    CreateGoodsRequest request,
     CancellationToken cancellationToken)
     {
-        if (string.IsNullOrWhiteSpace(goods.GoodsId))
+        if (string.IsNullOrWhiteSpace(request.GoodsId))
             return Result<Goods>.Failure(GoodsErrors.EmptyId);
-        if (string.IsNullOrWhiteSpace(goods.GoodsName))
+        if (string.IsNullOrWhiteSpace(request.GoodsName))
             return Result<Goods>.Failure(GoodsErrors.EmptyName);
 
-        if (goods.GoodsId.Length < 10 || goods.GoodsId.Length > 10)
+        if (request.GoodsId.Length != 10)
             return Result<Goods>.Failure(GoodsErrors.LengthId);
-        if (goods.GoodsName.Length > 30)
+        if (request.GoodsName.Length > 30)
             return Result<Goods>.Failure(GoodsErrors.LengthName);
 
-        if (goods.CostUnit <= 0 || goods.CostUnit > 999999.99m)
+        if (request.CostUnit <= 0 || request.CostUnit > 999_999.99m)
             return Result<Goods>.Failure(GoodsErrors.CostPerUnit);
 
-        var goodsExists = await _goodsRepository.ExistsAsync(goods.GoodsId, cancellationToken);
-        if (goodsExists) return Result<Goods>.Failure(GoodsErrors.DuplicateId(goods.GoodsId));
+        var goodsExists = await _goodsRepository.ExistsAsync(request.GoodsId, cancellationToken);
+        if (goodsExists) return Result<Goods>.Failure(GoodsErrors.DuplicateId(request.GoodsId));
 
-        var createdGoods = await _goodsRepository.AddAsync(
-            goods,
+        var entity = new Goods
+        {
+            GoodsId = request.GoodsId,
+            GoodsName = request.GoodsName,
+            CostUnit = request.CostUnit
+        };
+
+        var result = await _goodsRepository.AddAsync(
+            entity,
             cancellationToken);
 
-        return Result<Goods>.Success(createdGoods);
+        return Result<Goods>.Success(result);
     }
 
     public async Task<Result> DeleteGoodsAsync(string id, CancellationToken cancellationToken)
@@ -56,11 +63,11 @@ public class GoodsService : IGoodsService
         return Result<IEnumerable<Goods>>.Success(list);
     }
 
-    public async Task<Result<Goods?>> GetGoodsByIdAsync(string id, CancellationToken cancellationToken)
+    public async Task<Result<Goods>> GetGoodsByIdAsync(string id, CancellationToken cancellationToken)
     {
         var result = await _goodsRepository.GetByIdAsync(id, cancellationToken);
 
-        return result != null ? Result<Goods?>.Success(result) : Result<Goods?>.Failure(GoodsErrors.NotFound(id));
+        return result != null ? Result<Goods>.Success(result) : Result<Goods>.Failure(GoodsErrors.NotFound(id));
     }
 
     public async Task<Result<IEnumerable<Goods>>> GetGoodsByNameAsync(string name, CancellationToken cancellationToken)
@@ -70,15 +77,22 @@ public class GoodsService : IGoodsService
         return Result<IEnumerable<Goods>>.Success(list);
     }
 
-    public async Task<Result<Goods?>> UpdateGoodsAsync(string id, UpdateGoodsRequest goods, CancellationToken cancellationToken)
+    public async Task<Result<Goods>> UpdateGoodsAsync(string id, UpdateGoodsRequest request, CancellationToken cancellationToken)
     {
-        if (string.IsNullOrWhiteSpace(goods.GoodsName))
-            return Result<Goods?>.Failure(GoodsErrors.EmptyName);
-        if (goods.CostUnit <= 0 || goods.CostUnit > 999999.99m)
-            return Result<Goods?>.Failure(GoodsErrors.CostPerUnit);
+        if (string.IsNullOrWhiteSpace(request.GoodsName))
+            return Result<Goods>.Failure(GoodsErrors.EmptyName);
+        if (request.CostUnit <= 0 || request.CostUnit > 999_999.99m)
+            return Result<Goods>.Failure(GoodsErrors.CostPerUnit);
 
-        var result = await _goodsRepository.UpdateAsync(id, goods, cancellationToken);
+        var entity = new Goods
+        {
+            GoodsId = id,
+            GoodsName = request.GoodsName,
+            CostUnit = request.CostUnit
+        };
 
-        return result != null ? Result<Goods?>.Success(result) : Result<Goods?>.Failure(GoodsErrors.NotFound(id));
+        var result = await _goodsRepository.UpdateAsync(entity, cancellationToken);
+
+        return result ? Result<Goods>.Success(entity) : Result<Goods>.Failure(GoodsErrors.NotFound(id));
     }
 }
