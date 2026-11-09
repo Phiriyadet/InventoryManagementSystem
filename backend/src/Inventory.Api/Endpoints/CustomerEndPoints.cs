@@ -22,9 +22,11 @@ public static class CustomerEndPoints
                     ErrorType.NotFound => Results.NotFound(result.Error),
                     _ => Results.Problem(result.Error.Description)
                 };
-        });
+        })
+        .WithName("GetCustomerById")
+        .WithSummary("Get a customer by its Id");
 
-        // app.MapGet("/{name}", async (string name, ICustomerService customerService, CancellationToken cancellationToken) =>
+        // app.MapGet("/by-name/{name}", async (string name, ICustomerService customerService, CancellationToken cancellationToken) =>
         // {
         //     var result = await customerService.GetCustomerByNameAsync(name, cancellationToken);
 
@@ -40,7 +42,9 @@ public static class CustomerEndPoints
 
             return Results.Ok(result.Value);
 
-        });
+        })
+        .WithName("GetAllCustomers")
+        .WithSummary("Get all customers");
 
         api.MapPost("/", async (CreateCustomerRequest customer, ICustomerService customerService, CancellationToken cancellationToken) =>
         {
@@ -59,7 +63,9 @@ public static class CustomerEndPoints
 
                 _ => Results.Problem(result.Error.Description)
             };
-        });
+        })
+        .WithName("CreateCustomer")
+        .WithSummary("Create a new customer");
 
 
         api.MapPut("/{id}", async (string id, UpdateCustomerRequest customer, ICustomerService customerService, CancellationToken cancellationToken) =>
@@ -80,7 +86,9 @@ public static class CustomerEndPoints
 
                     _ => Results.Problem(result.Error.Description)
                 };
-        });
+        })
+        .WithName("UpdateCustomer")
+        .WithSummary("Update an existing customer by its Id");
 
         api.MapDelete("/{id}", async (string id, ICustomerService customerService, CancellationToken cancellationToken) =>
         {
@@ -93,8 +101,10 @@ public static class CustomerEndPoints
                 ErrorType.NotFound => Results.NotFound(result.Error),
                 _ => Results.Problem(result.Error.Description)
             };
-        });
+        })
+        .WithName("DeleteCustomer")
+        .WithSummary("Delete a customer by its Id");
 
-        return api;
+        return app;
     }
 }
