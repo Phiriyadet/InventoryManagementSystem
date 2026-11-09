@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { RouterView } from 'vue-router'
-import AppSidebar from './components/layout/AppSidebar.vue'
-import AppHeader from './components/layout/AppHeader.vue'
+import AppSidebar from './components/_layout/AppSidebar.vue'
+import AppHeader from './components/_layout/AppHeader.vue'
 </script>
 
 <template>
