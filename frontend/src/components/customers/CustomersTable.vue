@@ -25,7 +25,6 @@ const searchText = ref('')
 
 <template>
   <div class="customer-table">
-    <!-- Toolbar -->
     <div class="table-toolbar">
       <IconField>
         <InputIcon>
@@ -36,7 +35,6 @@ const searchText = ref('')
       </IconField>
     </div>
 
-    <!-- Table -->
     <DataTable
       :value="customer"
       :loading="loading"
@@ -57,9 +55,16 @@ const searchText = ref('')
       responsiveLayout="scroll"
       emptyMessage="No customer found."
     >
-      <Column field="cusId" header="ID" sortable style="min-width: 120px" />
+      <Column
+        field="cusId"
+        header="รหัสลูกค้า"
+        sortable
+        style="min-width: 120px"
+        header-style="text-align: center"
+      />
 
-      <Column field="cusName" header="Name" sortable style="min-width: 200px" />
+      <Column field="cusName" header="ชื่อลูกค้า" sortable style="min-width: 200px" />
+
       <Column header="Actions" :exportable="false" style="min-width: 140px">
         <template #body="{ data }">
           <div class="action-buttons">
@@ -86,17 +91,3 @@ const searchText = ref('')
     </DataTable>
   </div>
 </template>
-
-<style scoped>
-.table-toolbar {
-  display: flex;
-  justify-content: flex-end;
-  margin-bottom: 1rem;
-}
-
-.action-buttons {
-  display: flex;
-  justify-content: center;
-  gap: 0.25rem;
-}
-</style>
