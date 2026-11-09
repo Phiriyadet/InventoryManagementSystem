@@ -21,5 +21,5 @@ public static class GoodsErrors
         Error.Validation("Goods.EmptyName", "The goods name cannot be empty.");
 
     public static readonly Error CostPerUnit =
-        Error.Validation("Goods.CostPerUnit", "The goods cost per unit must be > 0 and <= 999999.99.");
+        Error.Validation("Goods.CostPerUnit", "The goods cost per unit must be > 0 and <= 999,999.99.");
 }
