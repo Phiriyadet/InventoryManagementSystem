@@ -2,7 +2,10 @@ using Inventory.Api.Endpoints;
 using Inventory.Application.Abstractions.Repositories;
 using Inventory.Application.Abstractions.Services;
 using Inventory.Application.Customers;
+using Inventory.Application.Orders;
+using Inventory.Application.Processing;
 using Inventory.Application.Products;
+using Inventory.Application.Reports;
 using Inventory.Infrastructure.Persistence;
 using Inventory.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -19,9 +22,15 @@ builder.Services.AddDbContext<InventoryDbContext>(options =>
 // Register services
 builder.Services.AddScoped<IGoodsRepository, GoodsRepository>();
 builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
+builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+builder.Services.AddScoped<IReportRepository, ReportRepository>();
+builder.Services.AddScoped<IOrderProcessingRepository, OrderProcessingRepository>();
 
 builder.Services.AddScoped<IGoodsService, GoodsService>();
 builder.Services.AddScoped<ICustomerService, CustomerService>();
+builder.Services.AddScoped<IOrderService, OrderService>();
+builder.Services.AddScoped<IReportService, ReportService>();
+builder.Services.AddScoped<IOrderProcessingService, OrderProcessingService>();
 
 builder.Services.AddOpenApi();
 
@@ -49,6 +58,8 @@ app.UseCors("Frontend");
 app.MapHealthEndpoints();
 app.MapGoodsEndpoints();
 app.MapCustomerEndpoints();
-
+app.MapOrderEndpoints();
+app.MapReportEndpoints();
+app.MapOrderProcessingEndpoints();
 
 await app.RunAsync();
