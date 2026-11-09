@@ -7,7 +7,7 @@ import 'primeicons/primeicons.css'
 import App from './App.vue'
 import router from './router'
 
-import './assets/main.css'
+import './assets/styles/index.css'
 
 const app = createApp(App)
 
