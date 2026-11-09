@@ -22,9 +22,11 @@ public static class GoodsEndPoints
                     ErrorType.NotFound => Results.NotFound(result.Error),
                     _ => Results.Problem(result.Error.Description)
                 };
-        });
+        })
+        .WithName("GetGoodsById")
+        .WithSummary("Get goods by its Id");
 
-        // app.MapGet("/api/goods/{name}", async (string name, IGoodsService goodsService, CancellationToken cancellationToken) =>
+        // app.MapGet("/by-name/{name}", async (string name, IGoodsService goodsService, CancellationToken cancellationToken) =>
         // {
         //     var result = await goodsService.GetGoodsByNameAsync(name, cancellationToken);
 
@@ -40,7 +42,9 @@ public static class GoodsEndPoints
 
             return Results.Ok(result.Value);
 
-        });
+        })
+        .WithName("GetAllGoods")
+        .WithSummary("Get all goods");
 
         api.MapPost("/", async (CreateGoodsRequest goods, IGoodsService goodsService, CancellationToken cancellationToken) =>
         {
@@ -59,7 +63,9 @@ public static class GoodsEndPoints
 
                 _ => Results.Problem(result.Error.Description)
             };
-        });
+        })
+        .WithName("CreateGoods")
+        .WithSummary("Create new goods");
 
 
         api.MapPut("/{id}", async (string id, UpdateGoodsRequest goods, IGoodsService goodsService, CancellationToken cancellationToken) =>
@@ -80,7 +86,9 @@ public static class GoodsEndPoints
 
                     _ => Results.Problem(result.Error.Description)
                 };
-        });
+        })
+        .WithName("UpdateGoods")
+        .WithSummary("Update existing goods by its Id");
 
         api.MapDelete("/{id}", async (string id, IGoodsService goodsService, CancellationToken cancellationToken) =>
         {
@@ -93,7 +101,9 @@ public static class GoodsEndPoints
                 ErrorType.NotFound => Results.NotFound(result.Error),
                 _ => Results.Problem(result.Error.Description)
             };
-        });
+        })
+        .WithName("DeleteGoods")
+        .WithSummary("Delete goods by its Id");
 
         return app;
     }
