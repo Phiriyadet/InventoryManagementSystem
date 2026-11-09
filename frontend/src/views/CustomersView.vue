@@ -8,8 +8,8 @@ import Toast from 'primevue/toast'
 import { useConfirm } from 'primevue/useconfirm'
 import { useToast } from 'primevue/usetoast'
 
-import CustomerTable from '../components/customer/CustomersTable.vue'
-import CustomerFormDialog from '../components/customer/CustomerFormDialog.vue'
+import CustomerTable from '../components/customers/CustomersTable.vue'
+import CustomerFormDialog from '../components/customers/CustomerFormDialog.vue'
 
 import { customerService } from '../services/customerService'
 
@@ -35,7 +35,7 @@ async function loadCustomer() {
     toast.add({
       severity: 'error',
       summary: 'Error',
-      detail: 'Unable to load customer data.',
+      detail: 'ไม่สามารถโหลดข้อมูลลูกค้าได้',
       life: 3000,
     })
   } finally {
@@ -66,7 +66,7 @@ async function saveCustomer(data: CreateCustomerRequest | UpdateCustomerRequest)
     toast.add({
       severity: 'success',
       summary: 'Success',
-      detail: 'Customer saved successfully.',
+      detail: 'บันทึกข้อมูลลูกค้าสำเร็จแล้ว',
       life: 3000,
     })
 
@@ -77,7 +77,7 @@ async function saveCustomer(data: CreateCustomerRequest | UpdateCustomerRequest)
     toast.add({
       severity: 'error',
       summary: 'Error',
-      detail: 'Unable to save customer.',
+      detail: 'ไม่สามารถบันทึกข้อมูลลูกค้าได้',
       life: 3000,
     })
   }
@@ -85,7 +85,7 @@ async function saveCustomer(data: CreateCustomerRequest | UpdateCustomerRequest)
 
 function confirmDelete(customer: Customer) {
   confirm.require({
-    message: `Are you sure you want to delete "${customer.cusName}" (${customer.cusId})?`,
+    message: `คุณแน่ใจหรือไม่ ว่าต้องการลบข้อมูล "${customer.cusName}" (${customer.cusId})?`,
     header: 'Confirm Delete',
     icon: 'pi pi-exclamation-triangle',
 
@@ -107,7 +107,7 @@ function confirmDelete(customer: Customer) {
         toast.add({
           severity: 'success',
           summary: 'Success',
-          detail: 'Customer deleted successfully.',
+          detail: 'ลบข้อมูลลูกค้าสำเร็จแล้ว',
           life: 3000,
         })
 
@@ -118,7 +118,7 @@ function confirmDelete(customer: Customer) {
         toast.add({
           severity: 'error',
           summary: 'Error',
-          detail: 'Unable to delete customer.',
+          detail: 'ไม่สามารถลบข้อมูลลูกค้าได้',
           life: 3000,
         })
       }
@@ -136,11 +136,11 @@ onMounted(loadCustomer)
 
     <div class="page-header">
       <div>
-        <h1>Customer Management</h1>
-        <p>Manage your customer information.</p>
+        <h1>การบันทึก/แก้ไข ข้อมูลลูกค้า</h1>
+        <p>เพิ่ม ลบ แก้ไข ข้อมูลลูกค้า</p>
       </div>
 
-      <Button label="Add Customer" icon="pi pi-plus" @click="openCreateDialog" />
+      <Button label="เพิ่มข้อมูลลูกค้า" icon="pi pi-plus" @click="openCreateDialog" />
     </div>
 
     <CustomerTable
@@ -161,23 +161,5 @@ onMounted(loadCustomer)
 <style scoped>
 .customer-page {
   padding: 1.5rem;
-}
-
-.page-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 1rem;
-  margin-bottom: 1.5rem;
-}
-
-.page-header h1 {
-  margin: 0;
-  font-size: 1.5rem;
-}
-
-.page-header p {
-  margin: 0.5rem 0 0;
-  color: var(--p-text-muted-color);
 }
 </style>

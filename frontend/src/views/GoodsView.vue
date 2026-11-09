@@ -35,7 +35,7 @@ async function loadGoods() {
     toast.add({
       severity: 'error',
       summary: 'Error',
-      detail: 'Unable to load goods data.',
+      detail: 'ไม่สามารถโหลดข้อมูลสินค้าได้',
       life: 3000,
     })
   } finally {
@@ -66,7 +66,7 @@ async function saveGoods(data: CreateGoodsRequest | UpdateGoodsRequest) {
     toast.add({
       severity: 'success',
       summary: 'Success',
-      detail: 'Goods saved successfully.',
+      detail: 'บันทึกข้อมูลสินค้าสำเร็จแล้ว',
       life: 3000,
     })
 
@@ -77,7 +77,7 @@ async function saveGoods(data: CreateGoodsRequest | UpdateGoodsRequest) {
     toast.add({
       severity: 'error',
       summary: 'Error',
-      detail: 'Unable to save goods.',
+      detail: 'ไม่สามารถบันทึกข้อมูลสินค้าได้',
       life: 3000,
     })
   }
@@ -85,7 +85,7 @@ async function saveGoods(data: CreateGoodsRequest | UpdateGoodsRequest) {
 
 function confirmDelete(goods: Goods) {
   confirm.require({
-    message: `Are you sure you want to delete "${goods.goodsName}" (${goods.goodsId})?`,
+    message: `คุณแน่ใจหรือไม่ ว่าต้องการลบข้อมูล  "${goods.goodsName}" (${goods.goodsId})?`,
     header: 'Confirm Delete',
     icon: 'pi pi-exclamation-triangle',
 
@@ -107,7 +107,7 @@ function confirmDelete(goods: Goods) {
         toast.add({
           severity: 'success',
           summary: 'Success',
-          detail: 'Goods deleted successfully.',
+          detail: 'ลบข้อมูลสินค้าสำเร็จแล้ว',
           life: 3000,
         })
 
@@ -118,7 +118,7 @@ function confirmDelete(goods: Goods) {
         toast.add({
           severity: 'error',
           summary: 'Error',
-          detail: 'Unable to delete goods.',
+          detail: 'ไม่สามารถลบข้อมูลสินค้าได้',
           life: 3000,
         })
       }
@@ -136,11 +136,11 @@ onMounted(loadGoods)
 
     <div class="page-header">
       <div>
-        <h1>Goods Management</h1>
-        <p>Manage your goods information.</p>
+        <h1>การบันทึก/แก้ไข ข้อมูลสินค้า</h1>
+        <p>เพิ่ม ลบ แก้ไข ข้อมูลสินค้า</p>
       </div>
 
-      <Button label="Add Goods" icon="pi pi-plus" @click="openCreateDialog" />
+      <Button label="เพิ่มข้อมูลสินค้า" icon="pi pi-plus" @click="openCreateDialog" />
     </div>
 
     <GoodsTable
@@ -157,23 +157,5 @@ onMounted(loadGoods)
 <style scoped>
 .goods-page {
   padding: 1.5rem;
-}
-
-.page-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 1rem;
-  margin-bottom: 1.5rem;
-}
-
-.page-header h1 {
-  margin: 0;
-  font-size: 1.5rem;
-}
-
-.page-header p {
-  margin: 0.5rem 0 0;
-  color: var(--p-text-muted-color);
 }
 </style>
