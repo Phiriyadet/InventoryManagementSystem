@@ -1,0 +1,62 @@
+@import url('https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap');
+
+:root {
+  /* Typography */
+  font-family: 'Prompt', sans-serif;
+
+  /* Colors */
+  --color-text: #1e293b;
+  --color-muted: #64748b;
+  --color-border: #e2e8f0;
+
+  --color-primary: #2563eb;
+  --color-primary-hover: #1d4ed8;
+
+  --color-danger: #dc2626;
+  --color-danger-hover: #991b1b;
+
+  --color-surface: #ffffff;
+  --color-background: #f8fafc;
+
+  /* Sidebar */
+  --sidebar-background: #172554;
+  --sidebar-text: #cbd5e1;
+  --sidebar-hover: #263b68;
+
+  /* Border Radius */
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 10px;
+
+  /* Spacing */
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+
+  /* Other */
+  color: var(--color-text);
+  background: var(--color-background);
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+#app {
+  min-height: 100vh;
+}
