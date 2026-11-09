@@ -5,7 +5,7 @@ import { useRoute } from 'vue-router'
 const route = useRoute()
 
 const pageTitle = computed(() => {
-  return route.meta.title ?? 'Dashboard'
+  return route.meta.title ?? 'แบบทดสอบ Programmer'
 })
 </script>
 
