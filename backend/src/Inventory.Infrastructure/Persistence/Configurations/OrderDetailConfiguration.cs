@@ -30,8 +30,6 @@ public class OrderDetailConfiguration
             .HasColumnType("numeric(8, 2)")
             .HasColumnName("COST_UNIT");
         builder.Property(e => e.FinDate)
-            .HasDefaultValue(new
-            DateTime(2000, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified))
             .HasColumnType("datetime")
             .HasColumnName("Fin_date");
         builder.Property(e => e.OrdDate)
@@ -45,12 +43,12 @@ public class OrderDetailConfiguration
 
         builder.HasOne(d => d.Goods).WithMany(p => p.OrderDetails)
             .HasForeignKey(d => d.GoodsId)
-            .OnDelete(DeleteBehavior.ClientSetNull)
+            .OnDelete(DeleteBehavior.NoAction)
             .HasConstraintName("FK_D_ORDER_G");
 
         builder.HasOne(d => d.Header).WithMany(p => p.Details)
             .HasForeignKey(d => d.OrderNo)
-            .OnDelete(DeleteBehavior.ClientSetNull)
+            .OnDelete(DeleteBehavior.Cascade)
             .HasConstraintName("FK_D_ORDER_H");
     }
 }

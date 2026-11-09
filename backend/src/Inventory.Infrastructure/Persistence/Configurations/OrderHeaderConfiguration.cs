@@ -28,7 +28,7 @@ public class OrderHeaderConfiguration
 
         builder.HasOne(d => d.Customer).WithMany(p => p.Orders)
             .HasForeignKey(d => d.CusId)
-            .OnDelete(DeleteBehavior.ClientSetNull)
+            .OnDelete(DeleteBehavior.NoAction)
             .HasConstraintName("FK_H_ORDER_CUS");
     }
 }
