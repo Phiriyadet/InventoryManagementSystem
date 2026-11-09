@@ -6,10 +6,10 @@ namespace Inventory.Application.Abstractions.Services;
 
 public interface ICustomerService
 {
-    Task<Result<Customer?>> GetCustomerByIdAsync(string id, CancellationToken cancellationToken);
+    Task<Result<Customer>> GetCustomerByIdAsync(string id, CancellationToken cancellationToken);
     Task<Result<IEnumerable<Customer>>> GetCustomerByNameAsync(string name, CancellationToken cancellationToken);
     Task<Result<IEnumerable<Customer>>> GetAllCustomerAsync(CancellationToken cancellationToken);
-    Task<Result<Customer>> AddCustomerAsync(CreateCustomerRequest customer, CancellationToken cancellationToken);
-    Task<Result<Customer?>> UpdateCustomerAsync(string id, UpdateCustomerRequest customer, CancellationToken cancellationToken);
+    Task<Result<Customer>> AddCustomerAsync(CreateCustomerRequest request, CancellationToken cancellationToken);
+    Task<Result<Customer>> UpdateCustomerAsync(string id, UpdateCustomerRequest request, CancellationToken cancellationToken);
     Task<Result> DeleteCustomerAsync(string id, CancellationToken cancellationToken);
 }
