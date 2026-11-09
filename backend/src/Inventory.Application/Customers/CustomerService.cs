@@ -14,23 +14,29 @@ public class CustomerService : ICustomerService
     {
         _customerRepository = customerRepository;
     }
-    public async Task<Result<Customer>> AddCustomerAsync(CreateCustomerRequest customer, CancellationToken cancellationToken)
+    public async Task<Result<Customer>> AddCustomerAsync(CreateCustomerRequest request, CancellationToken cancellationToken)
     {
-        if (string.IsNullOrWhiteSpace(customer.CusId))
+        if (string.IsNullOrWhiteSpace(request.CusId))
             return Result<Customer>.Failure(CustomerErrors.EmptyId);
-        if (string.IsNullOrWhiteSpace(customer.CusName))
+        if (string.IsNullOrWhiteSpace(request.CusName))
             return Result<Customer>.Failure(CustomerErrors.EmptyName);
 
-        if (customer.CusId.Length < 5 || customer.CusId.Length > 5)
+        if (request.CusId.Length != 5)
             return Result<Customer>.Failure(CustomerErrors.LengthId);
-        if (customer.CusName.Length > 30)
+        if (request.CusName.Length > 30)
             return Result<Customer>.Failure(CustomerErrors.LengthName);
 
-        var customerExists = await _customerRepository.ExistsAsync(customer.CusId, cancellationToken);
-        if (customerExists) return Result<Customer>.Failure(CustomerErrors.DuplicateId(customer.CusId));
+        var customerExists = await _customerRepository.ExistsAsync(request.CusId, cancellationToken);
+        if (customerExists) return Result<Customer>.Failure(CustomerErrors.DuplicateId(request.CusId));
+
+        var entity = new Customer
+        {
+            CusId = request.CusId,
+            CusName = request.CusName
+        };
 
         var createdCus = await _customerRepository.AddAsync(
-            customer,
+            entity,
             cancellationToken);
 
         return Result<Customer>.Success(createdCus);
@@ -50,11 +56,11 @@ public class CustomerService : ICustomerService
         return Result<IEnumerable<Customer>>.Success(list);
     }
 
-    public async Task<Result<Customer?>> GetCustomerByIdAsync(string id, CancellationToken cancellationToken)
+    public async Task<Result<Customer>> GetCustomerByIdAsync(string id, CancellationToken cancellationToken)
     {
         var result = await _customerRepository.GetByIdAsync(id, cancellationToken);
 
-        return result != null ? Result<Customer?>.Success(result) : Result<Customer?>.Failure(CustomerErrors.NotFound(id));
+        return result != null ? Result<Customer>.Success(result) : Result<Customer>.Failure(CustomerErrors.NotFound(id));
     }
 
     public async Task<Result<IEnumerable<Customer>>> GetCustomerByNameAsync(string name, CancellationToken cancellationToken)
@@ -64,13 +70,19 @@ public class CustomerService : ICustomerService
         return Result<IEnumerable<Customer>>.Success(list);
     }
 
-    public async Task<Result<Customer?>> UpdateCustomerAsync(string id, UpdateCustomerRequest customer, CancellationToken cancellationToken)
+    public async Task<Result<Customer>> UpdateCustomerAsync(string id, UpdateCustomerRequest request, CancellationToken cancellationToken)
     {
-        if (string.IsNullOrWhiteSpace(customer.CusName))
-            return Result<Customer?>.Failure(CustomerErrors.EmptyName);
+        if (string.IsNullOrWhiteSpace(request.CusName))
+            return Result<Customer>.Failure(CustomerErrors.EmptyName);
 
-        var result = await _customerRepository.UpdateAsync(id, customer, cancellationToken);
+        var entity = new Customer
+        {
+            CusId = id,
+            CusName = request.CusName
+        };
 
-        return result != null ? Result<Customer?>.Success(result) : Result<Customer?>.Failure(CustomerErrors.NotFound(id));
+        var result = await _customerRepository.UpdateAsync(entity, cancellationToken);
+
+        return result ? Result<Customer>.Success(entity) : Result<Customer>.Failure(CustomerErrors.NotFound(id));
     }
 }
