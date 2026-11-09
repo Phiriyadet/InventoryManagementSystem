@@ -1,5 +1,4 @@
 using Inventory.Application.Abstractions.Repositories;
-using Inventory.Application.Customers.DTOs;
 using Inventory.Domain.Entities;
 using Inventory.Infrastructure.Persistence;
 
@@ -10,27 +9,31 @@ namespace Inventory.Infrastructure.Repositories;
 public class CustomerRepository : ICustomerRepository
 {
     private readonly InventoryDbContext _context;
+
     public CustomerRepository(InventoryDbContext context)
     {
         _context = context;
     }
-    public async Task<Customer> AddAsync(CreateCustomerRequest customer, CancellationToken cancellationToken)
-    {
-        var entity = new Customer
-        {
-            CusId = customer.CusId,
-            CusName = customer.CusName
-        };
 
-        await _context.Customers.AddAsync(entity, cancellationToken);
+    public async Task<Customer> AddAsync(
+        Customer customer,
+        CancellationToken cancellationToken)
+    {
+        await _context.Customers.AddAsync(customer, cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);
-        return entity;
+
+        return customer;
     }
 
-    public async Task<bool> DeleteAsync(string id, CancellationToken cancellationToken)
+    public async Task<bool> DeleteAsync(
+        string id,
+        CancellationToken cancellationToken)
     {
-        var entity = await _context.Customers.FindAsync(id, cancellationToken);
-        if (entity == null) return false;
+        var entity = await _context.Customers.FindAsync(
+            [id], cancellationToken);
+
+        if (entity is null)
+            return false;
 
         _context.Customers.Remove(entity);
         await _context.SaveChangesAsync(cancellationToken);
@@ -38,43 +41,55 @@ public class CustomerRepository : ICustomerRepository
         return true;
     }
 
-    public async Task<bool> ExistsAsync(string id, CancellationToken cancellationToken)
+    public async Task<bool> ExistsAsync(
+        string id,
+        CancellationToken cancellationToken)
     {
-        var result = await _context.Customers.FindAsync(id, cancellationToken);
-
-        return result != null;
+        return await _context.Customers
+            .AnyAsync(c => c.CusId == id, cancellationToken);
     }
 
-    public async Task<IEnumerable<Customer>> GetAllAsync(CancellationToken cancellationToken)
+    public async Task<IReadOnlyList<Customer>> GetAllAsync(
+        CancellationToken cancellationToken)
     {
-        var result = await _context.Customers.ToListAsync(cancellationToken);
-
-        return result;
+        return await _context.Customers
+            .AsNoTracking()
+            .ToListAsync(cancellationToken);
     }
 
-    public async Task<Customer?> GetByIdAsync(string id, CancellationToken cancellationToken)
+    public async Task<Customer?> GetByIdAsync(
+        string id,
+        CancellationToken cancellationToken)
     {
-        var entity = await _context.Customers.FindAsync(id, cancellationToken);
-        if (entity == null) return null;
-
-        return entity;
+        return await _context.Customers
+            .AsNoTracking()
+            .FirstOrDefaultAsync(c => c.CusId == id, cancellationToken);
     }
 
-    public async Task<IEnumerable<Customer>> GetByNameAsync(string name, CancellationToken cancellationToken)
+    public async Task<IReadOnlyList<Customer>> GetByNameAsync(
+        string name,
+        CancellationToken cancellationToken)
     {
-        var result = await _context.Customers.Where(g => g.CusName.Contains(name)).ToListAsync(cancellationToken);
-        return result;
+        return await _context.Customers
+            .AsNoTracking()
+            .Where(c => c.CusName.Contains(name))
+            .ToListAsync(cancellationToken);
     }
 
-    public async Task<Customer?> UpdateAsync(string id, UpdateCustomerRequest customer, CancellationToken cancellationToken)
+    public async Task<bool> UpdateAsync(
+        Customer customer,
+        CancellationToken cancellationToken)
     {
-        var entity = await _context.Customers.FindAsync(id, cancellationToken);
-        if (entity == null) return null;
+        var entity = await _context.Customers.FindAsync(
+            [customer.CusId], cancellationToken);
+
+        if (entity is null)
+            return false;
 
         entity.CusName = customer.CusName;
 
         await _context.SaveChangesAsync(cancellationToken);
 
-        return entity;
+        return true;
     }
 }
